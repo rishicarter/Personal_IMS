@@ -39,7 +39,7 @@ st.subheader('App to organise, manage and plan food stock requirements.')
 
 # TODO: File handling using data_upload.py
 # filepath='./stock_info.csv'
-filepath='https://raw.githubusercontent.com/rishicarter/Streamlit-fundamentals/main/Personal_IMS/stock_info.csv'
+filepath='https://raw.githubusercontent.com/rishicarter/Personal_IMS/main/stock_info.csv'
 main_df=pd.read_csv(filepath, encoding="utf8")
 
 # TODO: Remove duplicacy in df
