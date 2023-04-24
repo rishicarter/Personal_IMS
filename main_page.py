@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import time
 import os
+from DBconnect import poms_db
 
 # Functions ---------------
 # @st.cache_data
@@ -33,6 +34,10 @@ st.set_page_config(
         'About': "# App to organise, manage and plan stock requirements!"
     }
 )
+
+# test=poms_db()
+# test.connect_db()
+
 
 # App Brief
 st.title('Personal Food Stock Management System!')
