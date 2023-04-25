@@ -19,7 +19,7 @@ def refresh_data(comp=st):
     col1.success('Data Added Successfully!!')
     with col2:
         with st.spinner('Refreshing data...'):
-            time.sleep(1)
+            # time.sleep(1)
             st.experimental_rerun()
 
 #--------------------------
@@ -153,9 +153,13 @@ with tab_add:
         col_add_changes.code(f"(\n'Stock' : {add_stock}\n'Quantity' : {add_quantity}\n'Category' : {add_cat_value}\n)",
                              language='python')
         if col_add_button.button('Save Changes', disabled=button_flg, key='add_button'):
-            row_add = [add_stock, add_quantity, add_cat_value]
-            main_df.loc[len(df)] = row_add
-            main_df.to_csv(filepath,encoding="utf8",index=False)
+            # row_add = [add_stock, add_quantity, add_cat_value]
+            # main_df.loc[len(df)] = row_add
+            # main_df.to_csv(filepath,encoding="utf8",index=False)
+            stock_table.update_one({'stock': add_stock},
+                                   {'$set': {'quantity': add_quantity,
+                                             'category': add_cat_value
+                                             }}, upsert=True)
             quant_flg,cat_flg,button_flg=True,True,True
             refresh_data(col_add_button)
                 
