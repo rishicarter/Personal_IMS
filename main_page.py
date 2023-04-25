@@ -3,9 +3,7 @@ import pandas as pd
 import streamlit as st
 import matplotlib.pyplot as plt
 import seaborn as sns
-import time
-import os
-from DBconnect import get_database_session
+from extras.DBconnect import get_database_session
 
 # Functions ---------------
 # @st.cache_data
@@ -171,8 +169,4 @@ with tab_free:
     #     pass
     #     # df.to_csv(filepath,encoding="utf8",index=False)
     #     # refresh_data()
-    st.info('Coming Soon')                
-        
-
-
-    
+    st.info('Coming Soon')
