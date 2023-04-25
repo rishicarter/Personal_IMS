@@ -29,7 +29,7 @@ st.set_page_config(
     page_title="IMS App",
     page_icon="🍗",
     layout="centered",
-    initial_sidebar_state='collapsed',
+    initial_sidebar_state='expanded',
     menu_items={
         'About': "# App to organise, manage and plan stock requirements!"
     }
@@ -165,12 +165,13 @@ with tab_add:
                 
 # Tab with full control and quick changes!
 with tab_free:
-    df = st.experimental_data_editor(df, num_rows='dynamic',
-                                     key='update_editor', use_container_width=True)
-    if st.button('Save Changes', key='free_button'):
-        df.to_csv(filepath,encoding="utf8",index=False)
-        refresh_data()
-                    
+    # df = st.experimental_data_editor(df, num_rows='dynamic',
+    #                                  key='update_editor', use_container_width=True)
+    # if st.button('Save Changes', key='free_button'):
+    #     pass
+    #     # df.to_csv(filepath,encoding="utf8",index=False)
+    #     # refresh_data()
+    st.info('Coming Soon')                
         
 
 
