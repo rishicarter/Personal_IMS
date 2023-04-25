@@ -5,12 +5,15 @@ import streamlit as st
 username = st.secrets['DB_USERNAME']
 password = st.secrets['DB_PASSWORD']
 
-uri = f"mongodb+srv://{username}:{password}@cluster0.r9atf7b.mongodb.net/poms_db?retryWrites=true&w=majority"
+uri = f"mongodb+srv://{username}:{password}@cluster0.r9atf7b.mongodb.net/pims_db"
 
 
 @st.cache_resource
 def get_database_session():
-    session = MongoClient(uri, server_api=ServerApi('1'))
+    try:
+        session = MongoClient(uri)
+    except:
+        session=0
     return session
 
 # class poms_db:

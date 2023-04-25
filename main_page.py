@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import time
 import os
-from DBconnect import poms_db
+from DBconnect import get_database_session
 
 # Functions ---------------
 # @st.cache_data
@@ -35,9 +35,19 @@ st.set_page_config(
     }
 )
 
-# test=poms_db()
-# test.connect_db()
+########################################################
+# Handling DB actions
+with st.spinner('Wait for DB Connection...'):
+    client = get_database_session()
+# if isinstance(stock_table_session, int) or not stock_table_session.server_info()['ok']:
+# st.write(stock_table_session.server_info())
+if isinstance(client, int) or not client.server_info()['ok']:
+    # TODO manual entry
+    pass
 
+stock_table = client.pims_db.stock_table
+
+########################################################
 
 # App Brief
 st.title('Personal Food Stock Management System!')
@@ -45,8 +55,10 @@ st.subheader('App to organise, manage and plan food stock requirements.')
 
 # TODO: File handling using data_upload.py
 # filepath='./stock_info.csv'
-filepath=os.path.abspath('stock_info.csv')
-main_df=pd.read_csv(filepath, encoding="utf8")
+# filepath=os.path.abspath('stock_info.csv')
+# main_df=pd.read_csv(filepath, encoding="utf8")
+
+main_df=pd.DataFrame(list(stock_table.find({}, {'_id':0})))
 
 # TODO: Remove duplicacy in df
 
@@ -105,13 +117,14 @@ with tab_update:
             col_changes.code(f"(\n'Stock' : {choice}\n'Quantity' : {old_value} -> {update_quant}\n'Category' : {old_cat} -> {update_cat_value}\n)",
                              language='python')
             if col_update.button('Save Changes', key='update_button'):
-                update_index=main_df[main_df.stock==choice].index[0]
-                row_add = [choice, update_quant, update_cat_value]
-                main_df.loc[update_index] = row_add
-                # main_df.loc[update_index, 'stock'] = choice
-                # main_df.loc[update_index, 'quantity'] = update_quant
-                # main_df.loc[update_index, 'category'] = update_cat_value
-                main_df.to_csv(filepath,encoding="utf8",index=False)
+                stock_table.update_one(
+                    { 'stock' : choice},
+                    {
+                    '$set' : {'quantity' : update_quant,
+                              'category' : update_cat_value
+                              }  
+                    } 
+                )
                 refresh_data(col_update)
 
 # Tab for adding new items to the system.

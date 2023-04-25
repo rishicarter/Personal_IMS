@@ -2,9 +2,10 @@ import streamlit as st
 import pandas as pd
 from DBconnect import get_database_session
 from json import loads
+from pathlib import Path
 
 st.write("Test File")
-df=pd.read_csv("./stock_info.csv", encoding='utf8')
+df=pd.read_csv(Path("./extras/stock_info.csv"), encoding='utf8')
 st.table(df)
 result = df.to_json(orient="records")
 st.write(result)
@@ -27,3 +28,15 @@ st.write("Stock table row count: ",stock_table.count_documents({}))
 
 test_frommongo = pd.DataFrame(list(stock_table.find({},{"_id": 0})))
 st.table(test_frommongo)
+
+# Update a value
+
+# if stock_table.count_documents({'stock':'Bread'}):
+#     st.write(stock_table.find({'stock':'Bread'})[0])
+    
+stock_table.update_one(
+    { 'stock' : 'Bread'},
+    {
+      '$set' : { 'quantity' : 7 }  
+    } 
+)
